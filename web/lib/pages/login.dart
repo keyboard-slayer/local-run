@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moon_design/moon_design.dart';
 
-import '../providers/login.dart';
+import '../providers/login.dart' as provider;
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -64,7 +64,7 @@ class Login extends StatelessWidget {
                     onTap:
                         () => {
                           if (formkey.currentState!.validate())
-                            {signIn(nameCtrl.text, pwdCtrl.text)},
+                            {provider.signIn(nameCtrl.text, pwdCtrl.text)},
                         },
                     label: const Text('Sign in'),
                     width: MediaQuery.of(context).size.width * 0.3,

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:moon_design/moon_design.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import './utils/dio.dart';
 import './pages/login.dart';
 
-void main() {
+void main() async {
+  await dotenv.load();
+  initDio();
   runApp(const App());
 }
 
