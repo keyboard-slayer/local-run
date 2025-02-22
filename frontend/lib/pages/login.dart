@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:moon_design/moon_design.dart';
 
+import '../providers/login.dart';
+
 class Login extends StatelessWidget {
   const Login({super.key});
-
-  signIn() {
-    print('It works !');
-  }
 
   @override
   Widget build(BuildContext context) {
     final formkey = GlobalKey<FormState>();
+    final nameCtrl = TextEditingController();
+    final pwdCtrl = TextEditingController();
 
     return Scaffold(
       body: Form(
@@ -33,6 +33,7 @@ class Login extends StatelessWidget {
                 children: [
                   MoonFormTextInput(
                     hintText: 'Username',
+                    controller: nameCtrl,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your username';
@@ -45,6 +46,7 @@ class Login extends StatelessWidget {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   MoonFormTextInput(
                     hintText: 'Password',
+                    controller: pwdCtrl,
                     obscureText: true,
                     width: MediaQuery.of(context).size.width * 0.3,
                     validator: (value) {
@@ -59,7 +61,11 @@ class Login extends StatelessWidget {
 
                   MoonFilledButton(
                     buttonSize: MoonButtonSize.md,
-                    onTap: signIn,
+                    onTap:
+                        () => {
+                          if (formkey.currentState!.validate())
+                            {signIn(nameCtrl.text, pwdCtrl.text)},
+                        },
                     label: const Text('Sign in'),
                     width: MediaQuery.of(context).size.width * 0.3,
                   ),
