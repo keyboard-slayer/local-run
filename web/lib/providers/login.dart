@@ -16,5 +16,6 @@ void signIn(String username, String password) async {
   if (response.statusCode != 200) {
     throw Exception("Unexpected backend error: ${response.statusMessage}");
   }
-}
 
+  print(response.data);
+}

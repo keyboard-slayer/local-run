@@ -12,7 +12,7 @@ import (
 //go:embed default.toml
 var defaultCfg string
 
-type database struct {
+type Dbcfg struct {
 	Username string
 	Password string
 	Host     string
@@ -26,7 +26,7 @@ type http struct {
 }
 
 type Config struct {
-	Db   database
+	Db   Dbcfg `toml:"database"`
 	Http http
 }
 
@@ -37,7 +37,7 @@ func LoadConfig() (Config, error) {
 	f := "/etc/local_run/config.toml"
 
 	if _, err := os.Stat(f); err != nil {
-		slog.Info(fmt.Sprintf("%s doesn't exist, using builtin config instead", f))
+		slog.Info(fmt.Sprintf("The file %s doesn't exist, using builtin config instead", f))
 		dat = defaultCfg
 	} else {
 		content, err := os.ReadFile(f)

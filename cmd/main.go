@@ -23,7 +23,10 @@ func run(ctx context.Context) error {
 		return err
 	}
 
-	postgres.InitPool(cfg.Db.Dbname)
+	pool, err := postgres.InitPool(cfg.Db)
+	if err != nil {
+		return err
+	}
 
 	var bind string
 	if cfg.Http.Expose {
@@ -32,7 +35,8 @@ func run(ctx context.Context) error {
 		bind = fmt.Sprintf("127.0.0.1:%d", cfg.Http.Port)
 	}
 
-	router := router.CreateRouter()
+	app := &router.App{Pool: pool}
+	router := router.CreateRouter(app)
 
 	server := http.Server{
 		Addr:    bind,
@@ -58,6 +62,8 @@ func run(ctx context.Context) error {
 			defer shutdownRelease()
 
 			slog.Info("Closing server...")
+
+			app.Pool.Close()
 
 			if err := server.Shutdown(shutdownCtx); err != nil {
 				return err

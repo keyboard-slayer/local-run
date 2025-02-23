@@ -17,6 +17,6 @@ func EnforceMethod(h http.HandlerFunc, m string) http.HandlerFunc {
 	})
 }
 
-func DefaultMiddlewares(h http.HandlerFunc) http.HandlerFunc {
-	return WithLogging(SetHeaders(h))
+func DefaultMiddlewares(h HttpHandleFuncErr) http.HandlerFunc {
+	return WithLogging(SetHeaders(ErrorCatcher(h)))
 }
