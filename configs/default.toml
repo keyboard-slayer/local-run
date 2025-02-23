@@ -1,0 +1,11 @@
+[database]
+username = "postgres"
+password = ""
+host = "localhost"
+port = 5432
+dbname = "local_run"
+
+[http]
+expose = false
+port = 8080
+

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -10,27 +9,27 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/joho/godotenv"
+	"github.com/keyboard-slayer/local-run/configs"
 	"github.com/keyboard-slayer/local-run/internal/postgres"
 	"github.com/keyboard-slayer/local-run/internal/server/router"
 )
 
-func run(ctx context.Context, port uint16, expose bool, dbname string) error {
+func run(ctx context.Context) error {
 	notify, cancel := signal.NotifyContext(ctx, os.Interrupt)
 	defer cancel()
 
-	postgres.InitPool(dbname)
-
-	err := godotenv.Load()
+	cfg, err := configs.LoadConfig()
 	if err != nil {
 		return err
 	}
 
+	postgres.InitPool(cfg.Db.Dbname)
+
 	var bind string
-	if expose {
-		bind = fmt.Sprintf("0.0.0.0:%d", port)
+	if cfg.Http.Expose {
+		bind = fmt.Sprintf("0.0.0.0:%d", cfg.Http.Port)
 	} else {
-		bind = fmt.Sprintf("127.0.0.1:%d", port)
+		bind = fmt.Sprintf("127.0.0.1:%d", cfg.Http.Port)
 	}
 
 	router := router.CreateRouter()
@@ -70,12 +69,7 @@ func run(ctx context.Context, port uint16, expose bool, dbname string) error {
 }
 
 func main() {
-	portPtr := flag.Int("port", 8080, "The port to use for the HTTP server")
-	exposePtr := flag.Bool("expose", false, "Whatever to expose the service to the network or not")
-	dbnamePtr := flag.String("dbname", "local_run", "The name of the database to use")
-	flag.Parse()
-
-	if err := run(context.Background(), uint16(*portPtr), *exposePtr, *dbnamePtr); err != nil {
+	if err := run(context.Background()); err != nil {
 		slog.Error(fmt.Sprintf("%s", err))
 		os.Exit(1)
 	}

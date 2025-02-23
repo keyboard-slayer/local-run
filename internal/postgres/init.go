@@ -4,16 +4,20 @@ import (
 	"context"
 	"log/slog"
 	"os"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/keyboard-slayer/local-run/internal/schemas"
 )
 
-func createDb(pool *pgxpool.Pool) {
-	// pool.Exec(schemas.UserSchema)
+func createDb(ctx context.Context, pool *pgxpool.Pool) {
+	pool.Exec(ctx, schemas.UserSchema)
 }
 
 func InitPool(dbname string) error {
-	ctx := context.Background()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
 	pool, err := pgxpool.New(ctx, os.Getenv("POSTGRES_URI"))
 
 	if err != nil {
@@ -30,7 +34,7 @@ func InitPool(dbname string) error {
 		pool.Exec(ctx, "CREATE DATABASE $1", dbname)
 	}
 
-	createDb(pool)
+	createDb(ctx, pool)
 
 	return nil
 }
