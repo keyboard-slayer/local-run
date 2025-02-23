@@ -7,4 +7,3 @@ void initDio() {
   dio.options.headers['X-LOCALRUN-CSRF-PROTECTION'] = '1';
   dio.options.headers['content-Type'] = 'application/json';
 }
-

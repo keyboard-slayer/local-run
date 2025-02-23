@@ -20,6 +20,11 @@ func SetHeaders(h http.HandlerFunc) http.HandlerFunc {
 		headers.Set("Cross-Origin-Resource-Policy", "same-site")
 		headers.Set("Permissions-Policy", "interest-cohort=()")
 
-		h(w, r)
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusNoContent)
+		} else {
+			h(w, r)
+		}
+
 	})
 }
