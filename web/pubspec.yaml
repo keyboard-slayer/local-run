@@ -37,6 +37,7 @@ dependencies:
   moon_design: ^1.1.0
   flutter_dotenv: ^5.2.1
   dio: ^5.8.0+1
+  flutter_secure_storage: ^9.2.4
 
 dev_dependencies:
   flutter_test:

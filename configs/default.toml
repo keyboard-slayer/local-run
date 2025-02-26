@@ -9,3 +9,6 @@ dbname = "local_run"
 expose = false
 port = 8080
 
+[security]
+# Generate it with `openssl rand -base64 36`
+jwt-secret = "your-very-secure-secret"

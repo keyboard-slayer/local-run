@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -15,6 +16,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   bool _showMsg = false;
   String _msg = "";
+  final _storage = FlutterSecureStorage();
 
   void setMsg(String newMsg) {
     setState(() {
@@ -41,7 +43,8 @@ class _LoginState extends State<Login> {
       } else if (response.data['Status'] == "error") {
         setMsg(response.data['msg']);
       } else {
-        setMsg('OK');
+        await _storage.write(key: 'token', value: response.data['token']);
+        setMsg("I have a token: ${response.data['token']}");
       }
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout) {
@@ -52,6 +55,20 @@ class _LoginState extends State<Login> {
         setMsg('Unexpected error: ${e.message}');
       }
     }
+  }
+
+  Future<void> checkJwt() async {
+    var token = await _storage.read(key: 'token');
+
+    if (token != null) {
+      setMsg("I have a token : $token");
+    }
+  }
+
+  @override
+  void initState() {
+    checkJwt();
+    super.initState();
   }
 
   @override

@@ -25,9 +25,14 @@ type http struct {
 	Expose bool
 }
 
+type security struct {
+	JwtSecret string `toml:"jwt-secret"`
+}
+
 type Config struct {
-	Db   Dbcfg `toml:"database"`
-	Http http
+	Db       Dbcfg `toml:"database"`
+	Http     http
+	Security security
 }
 
 func LoadConfig() (Config, error) {

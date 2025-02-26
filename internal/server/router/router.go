@@ -10,6 +10,7 @@ import (
 
 type App struct {
 	Pool *pgxpool.Pool
+	Key  []byte
 }
 
 func (app *App) ping(w http.ResponseWriter, r *http.Request) error {

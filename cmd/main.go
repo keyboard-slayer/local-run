@@ -35,7 +35,7 @@ func run(ctx context.Context) error {
 		bind = fmt.Sprintf("127.0.0.1:%d", cfg.Http.Port)
 	}
 
-	app := &router.App{Pool: pool}
+	app := &router.App{Pool: pool, Key: []byte(cfg.Security.JwtSecret)}
 	router := router.CreateRouter(app)
 
 	server := http.Server{
