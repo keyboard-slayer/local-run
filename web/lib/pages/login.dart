@@ -75,7 +75,7 @@ class _LoginState extends State<Login> {
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.27,
+              top: MediaQuery.of(context).size.height * 0.40,
               left: MediaQuery.of(context).size.width * 0.08,
               child: Column(
                 children: [
@@ -144,6 +144,7 @@ class _LoginState extends State<Login> {
                         },
                     label: const Text('Sign in'),
                     width: MediaQuery.of(context).size.width * 0.3,
+                    height: 50,
                   ),
 
                   SizedBox(
@@ -170,6 +171,7 @@ class _LoginState extends State<Login> {
                     onTap: () {},
                     label: const Text('Continue with passkey'),
                     width: MediaQuery.of(context).size.width * 0.3,
+                    height: 50,
                   ),
                 ],
               ),
